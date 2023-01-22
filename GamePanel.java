@@ -7,9 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Timer;
-
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -150,6 +153,40 @@ public class GamePanel extends JPanel implements Runnable {
         
 
     }
+    
+    public class Sound {
+        Clip clip;
+        URL soundURL[] = new URL[30];
+
+        public Sound() {
+            soundURL[0] = getClass().getResource("/sound/Sphere Sidestep - Snow Field.wav");
+
+        }
+
+        public void setFile(int i) {
+            try {
+
+                AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+                clip = AudioSystem.getClip();
+                clip.open(ais);
+            }catch(Exception e) {
+
+            }
+        }
+
+        public void play() {
+            clip.start();
+        }
+
+        public void loop() {
+            clip.loop(clip.LOOP_CONTINUOUSLY);
+        }
+
+        public void stop() {
+            clip.stop();
+        }
+    }
+
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
