@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     //player stuff
 
     int playerX = 100;
-    int playerY = 100;
+    int playerY = 400;
     int playerspeedx = 4;
     int playerspeedy = 4;
     int y = 0, x = 0;
@@ -69,8 +69,21 @@ public class GamePanel extends JPanel implements Runnable {
 
         double drawInterval = 1000000000 / FPS; // 0.01666 seconds
         double nextDrawTime = System.nanoTime() + drawInterval;
+        double timer = 0.01666;
         while (gameThread != null) {
-            System.out.println("game is running");
+            x += xIncr;
+            y += yIncr;
+            timer += 0.01666;
+            if (timer >= 30) {
+            	xIncr = 0;
+        		yIncr = 0;
+        		playerspeedx = 0;
+        		playerspeedy = 0;
+            
+            }
+            //9.0339349424984E14
+            //9.0346717425095E14
+            System.out.println(timer);
             update();
             repaint();
             try {
@@ -101,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.rightPressed == true) {
             playerX += playerspeedx;
         }
-        if (playerX >= 721) {
+        if (playerX >= getWidth() - 50) {
         	playerX -= playerspeedx;
         }
         if (playerX <= -1) {
@@ -110,9 +123,30 @@ public class GamePanel extends JPanel implements Runnable {
         if (playerY <= -1) {
         	playerY += playerspeedy;
         }
-        if (playerY >= 530) {
+        if (playerY >= getHeight() - 50) {
         	playerY -= playerspeedy;
         }
+        
+        if (x <= 0 || x >= getWidth() - 100) {
+            xIncr = -xIncr;
+        }
+        if (y <= 0 || y >= getHeight() - 100) {
+            yIncr = -yIncr;
+        }
+        
+        
+
+        if(playerX >= x && playerX <= x + 100) {
+        	if (playerY >= y &&  playerY <= y +100) {
+        		
+        		xIncr = 0;
+        		yIncr = 0;
+        		playerspeedx = 0;
+        		playerspeedy = 0;
+        	}
+        	
+        }
+      
         
 
     }
@@ -121,14 +155,18 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         try {
             BufferedImage image = ImageIO.read(new File("C:\\Users\\USER\\Downloads\\Setups And Extras\\gg.png"));
+            BufferedImage imaged = ImageIO.read(new File("C:\\Users\\USER\\Downloads\\Setups And Extras\\gg.png"));
+            BufferedImage imagel = ImageIO.read(new File("C:\\Users\\USER\\Downloads\\Setups And Extras\\gg.png"));
+            BufferedImage imager = ImageIO.read(new File("C:\\Users\\USER\\Downloads\\Setups And Extras\\gg.png"));
+            BufferedImage image2 = ImageIO.read(new File("C:\\Users\\USER\\Downloads\\Setups And Extras\\scary.png"));
             g.drawImage(image, playerX, playerY, 50, 50, null);
+            g.drawImage(image2, x, y, 100, 100, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-   
-    
+
 
     
 
